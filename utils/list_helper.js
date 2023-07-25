@@ -31,4 +31,15 @@ const mostBlogs = (blogs) => {
   const topAuthor = _.maxBy(blogsByAuthorArr, "author");
   return topAuthor;
 };
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
+
+const mostLikes = (blogs) => {
+  const blogsCopy = [...blogs];
+  const groupedBlogsByAuthor = _.groupBy(blogsCopy, "author");
+  const blogsByAuthorArr = [];
+  for (const [key, value] of Object.entries(groupedBlogsByAuthor)) {
+    blogsByAuthorArr.push({ author: key, likes: _.sumBy(value, "likes") });
+  }
+  const topLikes = _.maxBy(blogsByAuthorArr, "likes");
+  return topLikes;
+};
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
