@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const dummy = (blogs) => {
   return 1;
 };
@@ -18,4 +20,15 @@ const favoriteBlog = (blogs) => {
   delete result.__v;
   return result;
 };
-module.exports = { dummy, totalLikes, favoriteBlog };
+
+const mostBlogs = (blogs) => {
+  const blogsCopy = [...blogs];
+  const blogsByAuthorObj = _.countBy(blogsCopy, "author");
+  const blogsByAuthorArr = [];
+  for (const [key, value] of Object.entries(blogsByAuthorObj)) {
+    blogsByAuthorArr.push({ author: key, blogs: value });
+  }
+  const topAuthor = _.maxBy(blogsByAuthorArr, "author");
+  return topAuthor;
+};
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs };
