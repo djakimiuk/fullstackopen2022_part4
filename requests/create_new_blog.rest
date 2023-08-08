@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImRhd2lkMTIzIiwiaWQiOiI2NGQyYTE1YjY2NDdhNGVjN2RkMmIxOTQiLCJpYXQiOjE2OTE1MjU1MTB9.jucXD6ctolNivOUIhpKGapTEBKvPkFNF_nN8PEaPt1k
 
 {
-"title": "test2",
-  "author": "String",
-  "url": "http://localhost/3000",
-  "userId": "64d162d75443449a0f2ad02d"
+"title": "Bearer test",
+  "author": "Bearer",
+  "url": "http://localhost/3000"
 }
