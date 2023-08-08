@@ -39,10 +39,10 @@ describe("when there is initially one user in db", () => {
   });
 
   test("creation fails with proper statuscode and message if username already taken", async () => {
-    const usersAtStart = helper.usersInDb();
+    const usersAtStart = await helper.usersInDb();
 
     const newUser = {
-      username: "jan",
+      username: "testuser",
       name: "Jan Mickiewicz",
       password: "Test",
     };
@@ -57,6 +57,54 @@ describe("when there is initially one user in db", () => {
 
     const usersAtEnd = await helper.usersInDb();
     expect(usersAtEnd).toEqual(usersAtStart);
+  });
+
+  test("user creation fails with a suitable status code and error message if password contains less than 3 characters", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "andrzej",
+      name: "Andrzej Kowalski",
+      password: "12",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "password length must contain at least 3 characters"
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+
+  });
+
+  test("user creation fails with a suitable status code and error message if username contains less than 3 characters", async () => {
+    const usersAtStart = await helper.usersInDb();
+
+    const newUser = {
+      username: "an",
+      name: "Andrzej Kowalski",
+      password: "12451",
+    };
+
+    const result = await api
+      .post("/api/users")
+      .send(newUser)
+      .expect(400)
+      .expect("Content-Type", /application\/json/);
+
+    expect(result.body.error).toContain(
+      "is shorter than the minimum allowed length (3)."
+    );
+
+    const usersAtEnd = await helper.usersInDb();
+    expect(usersAtEnd).toEqual(usersAtStart);
+
   });
 });
 
