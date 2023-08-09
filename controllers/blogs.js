@@ -42,15 +42,29 @@ blogsRouter.post("/", async (request, response, next) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-  await Blog.findOneAndRemove(request.params.id);
-  response.status(204).end();
+  const decodedToken = jwt.verify(request.token, process.env.SECRET);
+
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: "token invalid" });
+  }
+
+  const blog = await Blog.findById(request.params.id);
+
+  if (blog.user._id.toString() === decodedToken.id.toString()) {
+    await Blog.findOneAndRemove(request.params.id);
+    return response.status(204).end();
+  } else {
+    return response
+      .status(401)
+      .json({ error: "You have no permission to delete that blog!" });
+  }
 });
 
 blogsRouter.put("/:id", async (request, response) => {
   const body = request.body;
 
   const blog = {
-    title: body.title,
+    title: body.title, 
     author: body.author,
     url: body.url,
     likes: body.likes,
