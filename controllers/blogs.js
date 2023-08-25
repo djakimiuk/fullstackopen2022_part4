@@ -48,7 +48,7 @@ blogsRouter.delete(
     const blog = await Blog.findById(request.params.id);
 
     if (blog.user._id.toString() === request.user._id.toString()) {
-      await Blog.findOneAndRemove(request.params.id);
+      await Blog.findByIdAndRemove(request.params.id);
       return response.status(204).end();
     } else {
       return response
