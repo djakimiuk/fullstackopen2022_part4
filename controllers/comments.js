@@ -14,7 +14,7 @@ commentsRouter.get("/", async (request, response) => {
 });
 
 commentsRouter.post(
-  "/:id/comments",
+  "/",
   middleware.tokenExtractor,
   middleware.userExtractor,
   async (request, response) => {

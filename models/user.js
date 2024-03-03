@@ -8,6 +8,12 @@ const userSchema = new mongoose.Schema({
       ref: "Blog",
     },
   ],
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Comment",
+    },
+  ],
   username: { type: String, required: true, unique: true, minLength: 3 },
   name: String,
   passwordHash: String,
